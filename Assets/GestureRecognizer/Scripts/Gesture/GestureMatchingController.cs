@@ -46,6 +46,8 @@ namespace GestureRecognizer
         // Visualization
         [Header("Gesture Visualization")]
         public bool EnableGestureVisualization = true;
+        public bool EnableLeadLines = true;
+        public bool ShowLabels = true;
         [Range(1, 50)]
         public float GestureLineThickness = 10; // mm
         public Color[] GestureColors = new Color[4];
@@ -106,6 +108,7 @@ namespace GestureRecognizer
                 go.transform.rotation = Quaternion.identity;
 
                 var gmatcher = go.AddComponent<GestureMatcher>();
+                gmatcher.ShowLabels = ShowLabels;
 
                 gmatcher.AssignedGesture = g;
                 m_gestureMatchers.Add(gmatcher);
@@ -131,6 +134,7 @@ namespace GestureRecognizer
                 matcher.LineThickness = GestureLineThickness;
                 matcher.GestureColor = GestureColors[i % GestureColors.Length];
                 matcher.EnableVisualization = EnableGestureVisualization;
+                matcher.EnableLeadLines = EnableLeadLines;
             }
 
             // Update and process path

@@ -15,6 +15,7 @@ public class OculusTouchGestureRecorder : MonoBehaviour
     public OVRInput.Controller ControllerType = OVRInput.Controller.LTouch;
     public IGestureRecorder GestureRecorderInstance = null;
     public GestureRecorderType RecorderType = GestureRecorderType.GestureComposer;
+    public GameObject Anchor = null;
 
     private bool m_triggerButtonDown = false;
 
@@ -22,6 +23,11 @@ public class OculusTouchGestureRecorder : MonoBehaviour
 
     void Start()
     {
+        if (Anchor == null)
+        {
+            Anchor = gameObject;
+        }
+
         if (RecorderType == GestureRecorderType.GestureComposer)
         {
             GestureRecorderInstance = GameObject.FindObjectOfType<GestureComposer>();
@@ -64,7 +70,7 @@ public class OculusTouchGestureRecorder : MonoBehaviour
 
     private void TriggerDown()
     {
-        GestureRecorderInstance.StartRecording(gameObject);
+        GestureRecorderInstance.StartRecording(Anchor);
     }
 
     private void TriggerUp()

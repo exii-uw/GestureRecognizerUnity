@@ -21,6 +21,8 @@ namespace GestureRecognizer
         public GameObject GestureVisualizerGO = null;
 
         public bool EnableVisualization = true;
+        public bool EnableLeadLines = true;
+        public bool ShowLabels = true;
         public Color GestureColor = Color.blue;
         public float LineThickness = 10; // mm
 
@@ -60,6 +62,7 @@ namespace GestureRecognizer
             GestureVisualizerGO.transform.rotation = Quaternion.identity;
 
             m_gestureVisualizer = GestureVisualizerGO.AddComponent<GestureVisualizer>();
+            m_gestureVisualizer.ShowLabels = ShowLabels;
             m_gestureVisualizer.SetGesture(AssignedGesture);
 
 
@@ -102,6 +105,7 @@ namespace GestureRecognizer
             m_gestureVisualizer.Completeness = m_completeness;
             m_gestureVisualizer.LineThickness = LineThickness;
             m_gestureVisualizer.GestureColor = GestureColor;
+            m_gestureVisualizer.EnableOcto3DVisualization = EnableLeadLines;
         }
 
         private float CalculateCompleteness(Vector3 _point)

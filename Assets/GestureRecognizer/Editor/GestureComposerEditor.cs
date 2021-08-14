@@ -66,8 +66,8 @@ namespace GestureRecognizer
                             int len = Application.streamingAssetsPath.Length;
                             string subpath = file.Substring(len);
 
-                            string dir = Path.GetDirectoryName(subpath);
-                            m_gestureComposer.RootPath = dir + "/";
+                            string dir = Path.GetDirectoryName(subpath).Substring(0);
+                            m_gestureComposer.RootPath = dir;
                         }
                         else
                         {
@@ -173,7 +173,7 @@ namespace GestureRecognizer
         {
             Directory.CreateDirectory(Application.streamingAssetsPath);
 
-            string path = Path.Combine(Application.streamingAssetsPath, $"{name}.json");
+            string path = Application.streamingAssetsPath + $"{name}.json";
             string str = JsonUtility.ToJson(gestureGroup);
 
             using (FileStream fs = new FileStream(path, FileMode.Create))
