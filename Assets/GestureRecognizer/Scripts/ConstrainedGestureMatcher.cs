@@ -64,6 +64,7 @@ namespace GestureRecognizer
         public int ParticleCount = 10;
         public float RMSErrorThreshold = 0.001f;
         public float RMSErrorMaxReset = 0.5f;
+        public float Sensitivity = 0.5f;
         public int MaxIterations = 10;
         public float SubSamplePrecent = 1.0f;
         public bool Verbose = false;
@@ -120,15 +121,6 @@ namespace GestureRecognizer
 
             // Cache previous result
             GestureMatchResults prevMatchResults = m_currentMatchResults;
-            if (prevMatchResults.RMSE > RMSErrorMaxReset)
-            {
-                prevMatchResults.Params.R = Quaternion.identity;
-                prevMatchResults.Params.t = Vector3.zero;
-                prevMatchResults.Params.s = Vector3.one;
-                Debug.Log("Rest Cached values");
-            }
-
-
 
             TransformationParameters SourceTransform;
             SourceTransform.R = prevMatchResults.Params.R; 
@@ -334,12 +326,13 @@ namespace GestureRecognizer
                 });
 
 
-                levenbergMarquardt.maximumIterations = 5;
+                levenbergMarquardt.maximumIterations = 8;
                 levenbergMarquardt.maximumInnerIterations = 100;
                 levenbergMarquardt.lambdaIncrement = 2.0f;
                 levenbergMarquardt.minimumReduction = 1.0e-12;
                 levenbergMarquardt.initialLambda = 0.001;
                 levenbergMarquardt.minimumErrorTolerance = RMSErrorThreshold;
+                levenbergMarquardt.Sensitivity = Sensitivity;
 
                 rmsError = levenbergMarquardt.Minimize(parameters0);
 

@@ -165,7 +165,7 @@ namespace GestureRecognizer
         private void ExportToStreamingAssets(GestureGroup gestureGroup)
         {
             if (gestureGroup == null) return;
-            string name = gestureGroup.GestureSetName;
+            string name =  Path.Combine(m_gestureComposer.RootPath, gestureGroup.GestureSetName);
             SaveToStreamingAssets(name, gestureGroup);
         }
 

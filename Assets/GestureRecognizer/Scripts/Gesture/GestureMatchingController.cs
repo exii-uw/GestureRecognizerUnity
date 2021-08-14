@@ -26,6 +26,9 @@ namespace GestureRecognizer
         ///////////////////////////////////////////////////////////////////////
         [Header("Optimizer Options")]
         [Range(0.0f, 1.0f)]
+        public float Sensitivity = 0.001f;
+
+        [Range(0.0f, 1.0f)]
         public float RMSErrorThreshold = 0.001f;
 
         [Range(0, 100)]
@@ -122,6 +125,7 @@ namespace GestureRecognizer
             {
                 var matcher = m_gestureMatchers[i];
                 matcher.m_matcher.MaxIterations = MaxIterations;
+                matcher.m_matcher.Sensitivity = Sensitivity;
                 matcher.m_matcher.SubSamplePrecent = SubSamplePrecent;
                 matcher.m_matcher.RMSErrorThreshold = RMSErrorThreshold;
                 matcher.LineThickness = GestureLineThickness;
@@ -271,7 +275,7 @@ namespace GestureRecognizer
             }
 
 
-            for (int i = 0; i < 5; ++i)
+            for (int i = 0; i < 10; ++i)
             {
                 UpdateAllMatchers();
 
@@ -311,6 +315,7 @@ namespace GestureRecognizer
             // Hide all matchers
             foreach (var matcher in m_gestureMatchers)
             {
+                matcher.UpdateState(m_initialGestureSateGO);
                 matcher.Hide();
             }
             m_pathVisualizer.GlobalAlpha = 0;

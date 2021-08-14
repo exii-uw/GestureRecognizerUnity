@@ -40,7 +40,7 @@ namespace GestureRecognizer
         public double lambdaIncrement = 10.0;
         public double initialLambda = 1.0e-3;
         public double minimumErrorTolerance = 1.0e-3;
-
+        public double Sensitivity = 0.5f;
 
         Function function;
         Jacobian jacobianFunction;
@@ -50,6 +50,8 @@ namespace GestureRecognizer
 
         public double Minimize(Vector<double> parameters)
         {
+            NumericalDifferentiation.Sensitivity = Sensitivity;
+
             state = States.Running;
             for (int iteration = 0; iteration < maximumIterations; iteration++)
             {
@@ -176,16 +178,23 @@ namespace GestureRecognizer
 
         public class NumericalDifferentiation
         {
+            static public double Sensitivity = 0.5;
+
             public NumericalDifferentiation(Function function)
             {
                 this.function = function;
+            }
+
+            private double Lerp(double min, double max, double interval)
+            {
+                return min + (max - min) * interval;
             }
 
             // J_ij, ith error from function, jth parameter
             public Matrix<double> Jacobian(Vector<double> parameters)
             {
                 const double deltaFactor = 1.0e-8;
-                const double minDelta = 1.0e-6;
+                double minDelta = Lerp(1.0e-6, 1.0e-4, Sensitivity);
 
                 // evaluate the function at the current solution
                 Vector<double> errorVector0 = function(parameters);
