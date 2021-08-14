@@ -36,6 +36,7 @@ namespace GestureRecognizer
         // Likelihood calculation
         [Range(1, 100)]
         public float HeatKernalBeta = 50.0f;
+        public bool DoFinalGestureMatchingPassOnComplete = false;
 
 
         // Visualization
@@ -139,39 +140,8 @@ namespace GestureRecognizer
                 }
 
                 if (m_currentPath.GetPath().Count > 5)
-                { 
-                    // Tally total RMSE
-                    float sumrmse = 0;
-                    float sumweight = 0;
-                    for (int i = 0; i < m_gestureMatchers.Count; ++i)
-                    {
-                        m_matcherResults[i] = m_gestureMatchers[i].GetResults();
-                        float rmse = (float)m_matcherResults[i].RMSE * 1000.0f; // convert RMSE to millimeters
-                        sumrmse += rmse;
-
-                        // Calculate weight based on Radial Basis Function (RBF) heat kernel
-                        m_weights[i] = Mathf.Exp(-(rmse * rmse) / (HeatKernalBeta * HeatKernalBeta));
-                        sumweight += m_weights[i];
-                    }
-                    m_weightSum = sumweight;
-
-                    // Update Likelihoods
-                    for (int i = 0; i < m_gestureMatchers.Count; ++i)
-                    {
-                        m_likelihoods[i] = (float)m_weights[i] / m_weights.Max();
-                    }
-
-                    // Update matchers
-                    for (int i = 0; i < m_gestureMatchers.Count; ++i)
-                    {
-                        m_gestureMatchers[i].UpdateLikelihood(m_likelihoods[i]);
-                    }
-
-                    // Process Path
-                    for (int i = 0; i < m_gestureMatchers.Count; ++i)
-                    {
-                        m_gestureMatchers[i].ProcessPath(m_currentPath);
-                    }
+                {
+                    UpdateAllMatchers();
                 }
             }
         }
@@ -223,29 +193,10 @@ namespace GestureRecognizer
         {
             m_pathAnchor = null;
 
-            // Get matcher with highest probablity
-            int maxIndex = 0;
-            for(int i = 0; i < m_likelihoods.Count; ++i)
-            {
-                if (m_likelihoods[i] >= 1.0)
-                {
-                    maxIndex = i;
-                }
-            }
+            // Calculate results and notify listeners
+            CalculateFinalResults();
 
-            GestureMatcherResult result = new GestureMatcherResult
-            {
-                Gesture = m_gestureMatchers[maxIndex],
-                LikeliHood = m_likelihoods[maxIndex],
-                Weight = m_weights[maxIndex],
-                RatioWeight = m_weights[maxIndex]/m_weightSum
-
-            };
-
-            if (m_gestureMatcherRestultEvent != null)
-                m_gestureMatcherRestultEvent.RaiseEvent(result);
-
-
+            // Hide all matchers
             foreach (var matcher in m_gestureMatchers)
             {
                 matcher.Hide();
@@ -307,7 +258,68 @@ namespace GestureRecognizer
         /// INTERNAL
         /////////////////////////////////////////////////////////////////////////////
 
+        private void CalculateFinalResults()
+        {
+            // Get matcher with highest probablity
+            int maxIndex = 0;
+            for (int i = 0; i < m_likelihoods.Count; ++i)
+            {
+                if (m_likelihoods[i] >= 1.0)
+                {
+                    maxIndex = i;
+                }
+            }
 
+            // Prepare results
+            GestureMatcherResult result = new GestureMatcherResult
+            {
+                Gesture = m_gestureMatchers[maxIndex],
+                LikeliHood = m_likelihoods[maxIndex],
+                Weight = m_weights[maxIndex],
+                RatioWeight = m_weights[maxIndex] / m_weightSum
+
+            };
+
+            // Notify all listeners
+            if (m_gestureMatcherRestultEvent != null)
+                m_gestureMatcherRestultEvent.RaiseEvent(result);
+        }
+
+        private void UpdateAllMatchers()
+        {
+            // Tally total RMSE
+            float sumrmse = 0;
+            float sumweight = 0;
+            for (int i = 0; i < m_gestureMatchers.Count; ++i)
+            {
+                m_matcherResults[i] = m_gestureMatchers[i].GetResults();
+                float rmse = (float)m_matcherResults[i].RMSE * 1000.0f; // convert RMSE to millimeters
+                sumrmse += rmse;
+
+                // Calculate weight based on Radial Basis Function (RBF) heat kernel
+                m_weights[i] = Mathf.Exp(-(rmse * rmse) / (HeatKernalBeta * HeatKernalBeta));
+                sumweight += m_weights[i];
+            }
+            m_weightSum = sumweight;
+
+            // Update Likelihoods
+            for (int i = 0; i < m_gestureMatchers.Count; ++i)
+            {
+                m_likelihoods[i] = (float)m_weights[i] / m_weights.Max();
+            }
+
+            // Update matchers
+            for (int i = 0; i < m_gestureMatchers.Count; ++i)
+            {
+                m_gestureMatchers[i].UpdateLikelihood(m_likelihoods[i]);
+            }
+
+            // Process Path
+            for (int i = 0; i < m_gestureMatchers.Count; ++i)
+            {
+                m_gestureMatchers[i].ProcessPath(m_currentPath);
+            }
+        }
 
     }
 }
