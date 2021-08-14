@@ -133,15 +133,15 @@ namespace GestureRecognizer
             return minIndex / (float)AssignedGesture.GetPath().Count;
         }
 
-        private GameObject m_initialState = null;
+        private GameObject m_initialStateGO = null;
         private void UpdateInitialState()
         {
-            if (m_initialState != null)
+            if (m_initialStateGO != null)
             {
                 // Update Visualizer
-                m_initialStartState.t = m_initialState.transform.position;
-                m_initialStartState.R = m_initialState.transform.rotation;
-                m_initialStartState.s = m_initialState.transform.localScale;
+                m_initialStartState.t = m_initialStateGO.transform.position;
+                m_initialStartState.R = m_initialStateGO.transform.rotation;
+                m_initialStartState.s = m_initialStateGO.transform.localScale;
             }
         }
 
@@ -168,7 +168,7 @@ namespace GestureRecognizer
 
         public void UpdateState(GameObject _state)
         {
-            m_initialState = _state;
+            m_initialStateGO = _state;
         }
 
         public void ProcessPath(Gesture _path)
