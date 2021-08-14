@@ -23,6 +23,7 @@ namespace GestureRecognizer
         ///////////////////////////////////////////////////////////////////////
         /// LM OPTIMIZATION CONTROLS
         ///////////////////////////////////////////////////////////////////////
+        [Header("Optimizer Options")]
         [Range(0.0f, 1.0f)]
         public float RMSErrorThreshold = 0.001f;
 
@@ -32,23 +33,22 @@ namespace GestureRecognizer
         [Range(0.0f, 1.0f)]
         public float SubSamplePrecent = 1.0f;
 
-
         // Likelihood calculation
-        [Space(10)]
         [Range(1, 100)]
         public float HeatKernalBeta = 50.0f;
 
 
         // Visualization
-        // Likelihood calculation
-        [Space(10)]
+        [Header("Gesture Visualization")]
+        public bool EnableGestureVisualization = true;
         [Range(1, 50)]
         public float GestureLineThickness = 10; // mm
         public Color[] GestureColors = new Color[4];
 
 
         // Path Options
-        [Space(10)]
+        [Header("User Path")]
+        public bool EnableUserPathVisualization = true;
         [Range(0, 0.02f)]
         public float MinimumPointDistance = 0.005f; // m
 
@@ -124,6 +124,7 @@ namespace GestureRecognizer
                 matcher.m_matcher.RMSErrorThreshold = RMSErrorThreshold;
                 matcher.LineThickness = GestureLineThickness;
                 matcher.GestureColor = GestureColors[i % GestureColors.Length];
+                matcher.EnableVisualization = EnableGestureVisualization;
             }
 
             // Update and process path
@@ -214,7 +215,7 @@ namespace GestureRecognizer
                 m_weights[i] = 0;
                 m_likelihoods[i] = 0;
             }
-            m_pathVisualizer.GlobalAlpha = 0.7f;
+            m_pathVisualizer.GlobalAlpha = EnableUserPathVisualization ? 0.7f : 0;
 
         }
 

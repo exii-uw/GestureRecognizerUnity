@@ -20,7 +20,7 @@ namespace GestureRecognizer
         [Space(10)]
         public GameObject GestureVisualizerGO = null;
 
-        
+        public bool EnableVisualization = true;
         public Color GestureColor = Color.blue;
         public float LineThickness = 10; // mm
 
@@ -98,7 +98,7 @@ namespace GestureRecognizer
             }
 
             // Update visualization
-            m_gestureVisualizer.GlobalAlpha = m_likelihood;
+            m_gestureVisualizer.GlobalAlpha = EnableVisualization ? m_likelihood : 0;
             m_gestureVisualizer.Completeness = m_completeness;
             m_gestureVisualizer.LineThickness = LineThickness;
             m_gestureVisualizer.GestureColor = GestureColor;
