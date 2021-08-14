@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 232708971780993082}
   - component: {fileID: 232708971780993083}
   m_Layer: 0
-  m_Name: GestureRecordingController
+  m_Name: GestureRecorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
