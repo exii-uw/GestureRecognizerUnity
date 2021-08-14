@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -194,14 +195,17 @@ namespace GestureRecognizer
             m_pathAnchor = null;
 
             // Calculate results and notify listeners
-            CalculateFinalResults();
-
-            // Hide all matchers
-            foreach (var matcher in m_gestureMatchers)
+            if (DoFinalGestureMatchingPassOnComplete)
             {
-                matcher.Hide();
+                StartCoroutine(DoFinalGesturePass(() =>
+                {
+                    CalculateFinalResults();
+                }));
             }
-            m_pathVisualizer.GlobalAlpha = 0;
+            else
+            {
+                CalculateFinalResults();
+            }
         }
 
         public void Pause(bool state)
@@ -258,6 +262,25 @@ namespace GestureRecognizer
         /// INTERNAL
         /////////////////////////////////////////////////////////////////////////////
 
+        IEnumerator DoFinalGesturePass(Action cb)
+        {
+            // Get Y-Axis rotations
+            foreach (var matcher in m_gestureMatchers)
+            {
+                matcher.ResetState(m_initialGestureSateGO);
+            }
+
+
+            for (int i = 0; i < 5; ++i)
+            {
+                UpdateAllMatchers();
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            cb?.Invoke();
+        }
+
         private void CalculateFinalResults()
         {
             // Get matcher with highest probablity
@@ -283,6 +306,14 @@ namespace GestureRecognizer
             // Notify all listeners
             if (m_gestureMatcherRestultEvent != null)
                 m_gestureMatcherRestultEvent.RaiseEvent(result);
+
+
+            // Hide all matchers
+            foreach (var matcher in m_gestureMatchers)
+            {
+                matcher.Hide();
+            }
+            m_pathVisualizer.GlobalAlpha = 0;
         }
 
         private void UpdateAllMatchers()
