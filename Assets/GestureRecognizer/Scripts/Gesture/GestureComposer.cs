@@ -15,7 +15,8 @@ namespace GestureRecognizer
 
         [HideInInspector]
         public string ActiveGestureSet = "";
-
+        [HideInInspector]
+        public string RootPath = "";
 
         // Private Vars
         private bool m_recordGesture = false;
@@ -158,7 +159,7 @@ namespace GestureRecognizer
                 return;
             }
 
-            var path = Path.Combine(Application.streamingAssetsPath, $"{ActiveGestureSet}.json");
+            var path = Path.Combine(Application.streamingAssetsPath + RootPath, $"{ActiveGestureSet}.json");
             LoadGestureSet(path);
         }
 

@@ -35,6 +35,11 @@ public class SheetController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (matchingObj == null)
+        {
+            matchingObj = FindObjectOfType<GestureMatchingController>().gameObject;
+        }
+
         matchingController = matchingObj.GetComponent<GestureMatchingController>();
         gestureComposer = matchingObj.GetComponent<GestureComposer>();
 

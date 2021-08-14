@@ -53,12 +53,26 @@ namespace GestureRecognizer
                     if (paths.Length > 0)
                     {
                         var file = paths[0];
+                        file = file.Replace("\\", "/");
+
                         var name = Path.GetFileNameWithoutExtension(file);
                         m_gestureComposer.ActiveGestureSet = name;
+                        m_gestureComposer.RootPath = "";
                         m_gestureComposer.LoadGestureSet(file);
                         m_gestureComposer.GestureSet.GestureSetName = name;
 
-                        SaveToStreamingAssets(name, m_gestureComposer.GestureSet);
+                        if (file.Contains(Application.streamingAssetsPath))
+                        {
+                            int len = Application.streamingAssetsPath.Length;
+                            string subpath = file.Substring(len);
+
+                            string dir = Path.GetDirectoryName(subpath);
+                            m_gestureComposer.RootPath = dir + "/";
+                        }
+                        else
+                        {
+                            SaveToStreamingAssets(name, m_gestureComposer.GestureSet);
+                        }
                     }
 
                 }
