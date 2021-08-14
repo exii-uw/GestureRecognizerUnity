@@ -287,7 +287,7 @@ PrefabInstance:
     - target: {fileID: 232708971780993060, guid: 2147b075163fb8e46a427ade41bb5ed2,
         type: 3}
       propertyPath: m_Name
-      value: GestureRecordingController
+      value: GestureRecorder
       objectReference: {fileID: 0}
     - target: {fileID: 232708971780993060, guid: 2147b075163fb8e46a427ade41bb5ed2,
         type: 3}

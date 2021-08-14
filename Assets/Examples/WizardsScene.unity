@@ -198,6 +198,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7807530064523963812, guid: ed745fbaf36f87c47a4fc90504506558,
         type: 3}
+      propertyPath: gridSpacing
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 7807530064523963812, guid: ed745fbaf36f87c47a4fc90504506558,
+        type: 3}
       propertyPath: matchingObj
       value: 
       objectReference: {fileID: 910200678}
@@ -20808,7 +20813,7 @@ PrefabInstance:
     - target: {fileID: 232708971780993060, guid: 2147b075163fb8e46a427ade41bb5ed2,
         type: 3}
       propertyPath: m_Name
-      value: GestureRecordingController
+      value: GestureRecorder
       objectReference: {fileID: 0}
     - target: {fileID: 232708971780993081, guid: 2147b075163fb8e46a427ade41bb5ed2,
         type: 3}

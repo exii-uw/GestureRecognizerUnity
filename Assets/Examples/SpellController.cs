@@ -48,7 +48,7 @@ public class SpellController : MonoBehaviour
             c = Color.black;
         }
 
-        if (result.RatioWeight > 0.7f && result.Weight > 0.2)
+        if (result.RatioWeight > 0.7f && result.Weight > 0.05)
         {
             var go = GameObject.Instantiate(Spell);
             go.GetComponent<SpellEffect>().SpellColor = c;
