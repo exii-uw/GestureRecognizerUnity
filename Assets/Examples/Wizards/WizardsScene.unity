@@ -10820,6 +10820,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
+      propertyPath: GestureSet.Gestures.Array.data[1].Options.RotationZ.Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
       propertyPath: GestureSet.Gestures.Array.data[2].NormalizedPath.Array.size
       value: 195
       objectReference: {fileID: 0}
@@ -10830,6 +10834,14 @@ PrefabInstance:
     - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
       propertyPath: GestureSet.Gestures.Array.data[2].Options.RotationY.Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
+      propertyPath: GestureSet.Gestures.Array.data[1].Options.ScaleUniform.MaxRange
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
+      propertyPath: GestureSet.Gestures.Array.data[1].Options.ScaleUniform.MinRange
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 312920938, guid: 511c9a974cb0e284e8985e00533caea3, type: 3}
       propertyPath: GestureSet.Gestures.Array.data[0].NormalizedPath.Array.data[1].x

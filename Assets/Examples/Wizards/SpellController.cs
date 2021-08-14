@@ -52,7 +52,9 @@ public class SpellController : MonoBehaviour
         {
             var go = GameObject.Instantiate(Spell);
             go.GetComponent<SpellEffect>().SpellColor = c;
+            go.GetComponent<SpellEffect>().Speed = Mathf.Lerp(go.GetComponent<SpellEffect>().Speed, 3f, result.Scale/3);
             go.transform.position = VRHeadGO.transform.position;
+            go.transform.localScale = Vector3.one * result.Scale * result.Scale;
 
             var dir = VRHeadGO.transform.TransformDirection(Vector3.forward);
             dir.y = 0;

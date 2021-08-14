@@ -15,6 +15,7 @@ namespace GestureRecognizer
         public float LikeliHood;
         public float Weight;
         public float RatioWeight;
+        public float Scale;
     }
 
 
@@ -307,7 +308,8 @@ namespace GestureRecognizer
                 Gesture = m_gestureMatchers[maxIndex],
                 LikeliHood = m_likelihoods[maxIndex],
                 Weight = m_weights[maxIndex],
-                RatioWeight = m_weights[maxIndex] / m_weightSum
+                RatioWeight = m_weights[maxIndex] / m_weightSum,
+                Scale = m_gestureMatchers[maxIndex].GestureVisualizerGO.transform.localScale.x,
 
             };
 
